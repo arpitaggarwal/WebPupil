@@ -32,30 +32,4 @@ public class TestService {
     private PupilServiceImpl pupilService;
     final Long ID = 1l;
 
-/*    @Before
-    public void setUp(){
-        List<Pupil> pupilList = pupilService.getAllPupils();
-        for (int i = 0; i < pupilList.size(); i++) {
-            pupilService.deletePupil(pupilList.get(i).getId());
-        }
-        Pupil pupil = new Pupil("Name", "Last", "Group", "HI", "Address");
-        Long index = pupilService.addPupil(pupil);
-        System.out.println(index);
-    }
-*/
-    @Test
-    public void testGetAllPupils() {
-        List<Pupil> pupilList = new ArrayList<Pupil>();
-        when(pupilDao.getAllPupils()).thenReturn(pupilList);
-        assertSame(pupilList, pupilService.getAllPupils());
-    }
-
-    @Test
-    public void testAddPupil(){
-        Pupil pupil = new Pupil("Name", "Last", "Group", "HI", "Address");
-        when(pupilDao.addPupil(pupil)).thenReturn(ID);
-        Long index = pupilService.addPupil(pupil);
-        verify(pupilDao, times(1)).addPupil(pupil);
-        assertThat(ID, is(index));
-    }
 }
