@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="WebPupil:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="WebPupil.war">
+      <element id="artifact" artifact-name="WebPupil:war exploded" />
+    </root>
+  </artifact>
+</component>
