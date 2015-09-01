@@ -3,16 +3,19 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
+    <context:annotation-config/>
     <context:component-scan base-package="controller"/>
     <context:component-scan base-package="dao.implement"/>
     <context:component-scan base-package="service.implement"/>
-    <context:annotation-config/>
+    <jpa:repositories base-package="repositories"/>
 
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
@@ -22,6 +25,27 @@
     </bean>
 
     <bean id="pupilService" class="service.implement.PupilServiceImpl" autowire="byName"/>
-    <bean id="pupilController" class="controller.PupilController"/>
-    <bean id="pupilDAO" class="dao.implement.PupilDAOImpl" autowire="byName"/>
+    <bean id="pupilRepositories" class="repositories.PupilRepositories" autowire="byName"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/hibernatedb"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="password"/>
+    </bean>
+
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="true"/>
+        <property name="generateDdl" value="true"/>
+        <property name="database" value="POSTGRESQL"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+        <!-- spring based scanning for entity classes-->
+        <property name="packagesToScan" value="entities"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
 </beans>
